@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CONCEPT ART — Dem</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;1,9..144,400;1,9..144,600&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  /* ============ TOKENS ============ */
+  :root{
+    --bg: #120F17;
+    --bg-panel: #17131C;
+    --bg-panel-alt: #1E1823;
+    --text: #EDE6DA;
+    --text-muted: #948C9B;
+    --accent: #58D6AE;      /* verde bioluminiscente — renders / interacción */
+    --accent-warm: #E3A15A; /* ámbar — bestiario / etiquetas de biomas */
+    --line: rgba(237,230,218,0.12);
+    --line-strong: rgba(237,230,218,0.22);
+    --maxw: 1180px;
+  }
+
+  *{ box-sizing: border-box; }
+  html{ scroll-behavior: smooth; }
+
+  body{
+    margin:0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Space Grotesk", sans-serif;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,h2,h3, .display{
+    font-family: "Fraunces", serif;
+    font-weight: 500;
+    margin: 0;
+  }
+
+  a{ color: inherit; text-decoration: none; }
+
+  ::selection{ background: var(--accent); color: #10151A; }
+
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior: auto; }
+    *{ animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+  }
+
+  /* ============ NAV ============ */
+  .nav{
+    position: fixed;
+    top: 0; right: 0; left: 0;
+    z-index: 100;
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 28px clamp(20px, 5vw, 56px);
+    pointer-events: none;
+  }
+  .nav-mark{
+    font-family:"Fraunces", serif;
+    font-style: italic;
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    pointer-events: auto;
+    opacity: 0;
+    transition: opacity .5s ease;
+  }
+  .nav-mark.visible{ opacity: 1; }
+
+  .nav-links{
+    display:flex;
+    gap: clamp(16px, 2.5vw, 34px);
+    list-style:none;
+    margin:0; padding: 10px 18px;
+    pointer-events: auto;
+    background: rgba(18,15,23,0.55);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+  }
+  .nav-links a{
+    font-size: 0.86rem;
+    color: var(--text-muted);
+    letter-spacing: 0.01em;
+    position: relative;
+    transition: color .25s ease;
+    white-space: nowrap;
+  }
+  .nav-links a:hover, .nav-links a.active{ color: var(--text); }
+  .nav-links a.active::after{
+    content:"";
+    position:absolute;
+    left: 0; right: 0; bottom: -6px;
+    height: 1px;
+    background: var(--accent);
+  }
+
+  .nav-toggle{
+    display:none;
+    width: 42px; height:42px;
+    border-radius: 50%;
+    border: 1px solid var(--line);
+    background: rgba(18,15,23,0.6);
+    pointer-events: auto;
+    align-items:center; justify-content:center;
+    flex-direction: column; gap: 5px;
+    cursor:pointer;
+  }
+  .nav-toggle span{
+    width: 16px; height:1px; background: var(--text);
+    transition: transform .3s ease, opacity .3s ease;
+  }
+
+  @media (max-width: 720px){
+    .nav-links{
+      position: fixed;
+      top: 0; right: 0; bottom:0;
+      left: 40%;
+      border-radius: 0;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 40px;
+      transform: translateX(100%);
+      transition: transform .4s ease;
+      background: rgba(15,12,19,0.97);
+      backdrop-filter: blur(14px);
+    }
+    .nav-links.open{ transform: translateX(0); }
+    .nav-links a{ font-size: 1.15rem; }
+    .nav-toggle{ display:flex; }
+  }
+
+  /* ============ HERO ============ */
+  .hero{
+    min-height: 100svh;
+    display:flex;
+    flex-direction: column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    position: relative;
+    padding: 24px;
+    background:
+      radial-gradient(ellipse 60% 45% at 50% 30%, rgba(88,214,174,0.07), transparent 60%),
+      radial-gradient(ellipse 70% 50% at 80% 85%, rgba(227,161,90,0.05), transparent 60%),
+      var(--bg);
+    overflow:hidden;
+  }
+  .hero::before{
+    /* textura de grano sutil */
+    content:"";
+    position:absolute; inset:0;
+    background-image: radial-gradient(rgba(237,230,218,0.045) 1px, transparent 1px);
+    background-size: 3px 3px;
+    opacity: .5;
+    pointer-events:none;
+  }
+  .hero-title{
+    font-size: clamp(3.2rem, 13vw, 8.5rem);
+    letter-spacing: 0.01em;
+    line-height: 0.95;
+  }
+  .hero-sub{
+    margin-top: 18px;
+    font-family: "Fraunces", serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(0.95rem, 1.6vw, 1.15rem);
+    color: var(--text-muted);
+    letter-spacing: 0.04em;
+  }
+  .hero-scroll{
+    position:absolute;
+    bottom: 40px;
+    display:flex;
+    flex-direction: column;
+    align-items:center;
+    gap: 10px;
+    color: var(--text-muted);
+    font-size: 0.75rem;
+  }
+  .hero-scroll-line{
+    width:1px; height: 42px;
+    background: linear-gradient(var(--text-muted), transparent);
+    animation: pulse-line 2.4s ease-in-out infinite;
+  }
+  @keyframes pulse-line{
+    0%,100%{ opacity: .3; }
+    50%{ opacity: 1; }
+  }
+
+  /* ============ SECCIONES / ESTRUCTURA GENERAL ============ */
+  section{
+    padding: 130px clamp(20px, 6vw, 64px);
+    max-width: var(--maxw);
+    margin: 0 auto;
+  }
+  .section-head{
+    display:flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 24px;
+    margin-bottom: 56px;
+    padding-bottom: 22px;
+    border-bottom: 1px solid var(--line);
+  }
+  .section-head h2{
+    font-size: clamp(2rem, 4vw, 2.8rem);
+    font-weight: 500;
+  }
+  .section-head p{
+    color: var(--text-muted);
+    max-width: 320px;
+    font-size: 0.92rem;
+    text-align: right;
+  }
+  @media (max-width: 640px){
+    .section-head{ flex-direction: column; align-items: flex-start; }
+    .section-head p{ text-align:left; }
+  }
+
+  /* ============ GALERÍAS (RENDERS / 3D / ILUSTRACIONES) ============ */
+  .gallery{
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 18px;
+  }
+  .piece{
+    position: relative;
+    overflow:hidden;
+    border: 1px solid var(--line);
+    background: var(--bg-panel);
+    cursor: pointer;
+  }
+  .piece img{
+    width:100%; height:100%;
+    object-fit: cover;
+    display:block;
+  }
+  /* placeholder visual para cuando aún no hay imagen cargada */
+  .piece .placeholder{
+    width:100%; height:100%;
+    display:flex; align-items:center; justify-content:center;
+    font-family:"Fraunces", serif; font-style: italic;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    text-align:center;
+    padding: 20px;
+    background:
+      linear-gradient(135deg, var(--bg-panel-alt) 25%, transparent 25%) -10px 0/20px 20px,
+      linear-gradient(225deg, var(--bg-panel-alt) 25%, transparent 25%) -10px 0/20px 20px,
+      var(--bg-panel);
+  }
+  .piece .meta{
+    position:absolute; left:0; right:0; bottom:0;
+    padding: 14px 16px;
+    background: linear-gradient(to top, rgba(10,8,13,0.92), transparent);
+    transform: translateY(100%);
+    transition: transform .3s ease;
+  }
+  .piece:hover .meta{ transform: translateY(0); }
+  .piece .meta .name{ font-family:"Fraunces", serif; font-size: 0.95rem; }
+  .piece .meta .tag{ font-size: 0.72rem; color: var(--accent); letter-spacing: 0.03em; }
+
+  /* tamaños variados: evita el grid uniforme de "tarjetas idénticas" */
+  .gallery .piece:nth-child(6n+1){ grid-column: span 3; grid-row: span 2; aspect-ratio: 4/5; }
+  .gallery .piece:nth-child(6n+2){ grid-column: span 3; aspect-ratio: 4/3; }
+  .gallery .piece:nth-child(6n+3){ grid-column: span 3; aspect-ratio: 4/3; }
+  .gallery .piece:nth-child(6n+4){ grid-column: span 2; aspect-ratio: 1/1; }
+  .gallery .piece:nth-child(6n+5){ grid-column: span 2; aspect-ratio: 1/1; }
+  .gallery .piece:nth-child(6n+6){ grid-column: span 2; aspect-ratio: 1/1; }
+
+  @media (max-width: 900px){
+    .gallery{ grid-template-columns: repeat(2, 1fr); }
+    .gallery .piece{ grid-column: span 1 !important; aspect-ratio: 4/5 !important; grid-row: auto !important; }
+  }
+
+  /* ============ BESTIARIO ============ */
+  .bestiary-list{
+    display:flex;
+    flex-direction: column;
+  }
+  .specimen{
+    display:grid;
+    grid-template-columns: 90px 220px 1fr;
+    gap: 32px;
+    align-items: center;
+    padding: 28px 0;
+    border-bottom: 1px solid var(--line);
+    transition: padding-left .3s ease;
+  }
+  .specimen:hover{ padding-left: 10px; }
+  .specimen .index{
+    font-family:"Fraunces", serif;
+    font-style: italic;
+    color: var(--text-muted);
+    font-size: 0.95rem;
+  }
+  .specimen .thumb{
+    width: 100%;
+    aspect-ratio: 1/1;
+    background: var(--bg-panel);
+    border: 1px solid var(--line);
+    display:flex; align-items:center; justify-content:center;
+    color: var(--text-muted);
+    font-size: 0.7rem;
+    text-align:center;
+    padding: 10px;
+  }
+  .specimen .thumb img{ width:100%; height:100%; object-fit:cover; }
+  .specimen .info h3{ font-size: 1.3rem; font-weight: 500; }
+  .specimen .info .biome{
+    display:inline-block;
+    margin-top: 6px;
+    font-size: 0.7rem;
+    letter-spacing: 0.04em;
+    color: var(--accent-warm);
+    border: 1px solid rgba(227,161,90,0.35);
+    padding: 3px 10px;
+    border-radius: 999px;
+  }
+  .specimen .info p{
+    margin-top: 10px;
+    color: var(--text-muted);
+    font-size: 0.92rem;
+    max-width: 60ch;
+  }
+  @media (max-width: 720px){
+    .specimen{ grid-template-columns: 60px 90px 1fr; gap: 16px; }
+  }
+
+  /* ============ VISTA BESTIARIO (panel superpuesto) ============ */
+  /* No es una página nueva: es la misma interfaz, pero el bestiario se
+     desliza por encima del resto en vez de aparecer al hacer scroll. */
+  #bestiario{
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    background: var(--bg);
+    overflow-y: auto;
+    max-width: none;
+    padding: 130px 0 80px;
+    transform: translateY(100%);
+    opacity: 0;
+    visibility: hidden;
+    transition: transform .55s cubic-bezier(.16,1,.3,1), opacity .4s ease, visibility 0s linear .55s;
+  }
+  #bestiario.open{
+    transform: translateY(0);
+    opacity: 1;
+    visibility: visible;
+    transition: transform .55s cubic-bezier(.16,1,.3,1), opacity .4s ease, visibility 0s;
+  }
+  #bestiario > .section-head,
+  #bestiario > .bestiary-list{
+    max-width: var(--maxw);
+    margin: 0 auto;
+    padding-left: clamp(20px, 6vw, 64px);
+    padding-right: clamp(20px, 6vw, 64px);
+  }
+  .view-close{
+    position: fixed;
+    top: 26px; left: clamp(20px, 5vw, 56px);
+    z-index: 210;
+    display:flex; align-items:center; gap: 10px;
+    background: rgba(18,15,23,0.55);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 10px 18px 10px 14px;
+    color: var(--text-muted);
+    font-size: 0.86rem;
+    cursor:pointer;
+    transform: translateX(-8px);
+    opacity: 0;
+    pointer-events:none;
+    transition: opacity .3s ease .15s, transform .3s ease .15s, color .25s ease;
+  }
+  #bestiario.open .view-close{
+    opacity: 1; transform: translateX(0); pointer-events:auto;
+  }
+  .view-close:hover{ color: var(--text); }
+  .view-close svg{ width: 14px; height:14px; }
+  body.view-locked{
+    position: fixed;
+    left: 0; right: 0;
+    overflow: hidden;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    #bestiario{ transition: opacity .2s ease, visibility 0s linear .2s; transform: none; }
+    #bestiario.open{ transition: opacity .2s ease, visibility 0s; }
+  }
+
+  /* ============ SOBRE MÍ ============ */
+  .about{
+    display:grid;
+    grid-template-columns: 0.9fr 1.1fr;
+    gap: 64px;
+    align-items: start;
+  }
+  .about .portrait{
+    aspect-ratio: 3/4;
+    background: var(--bg-panel);
+    border: 1px solid var(--line);
+    display:flex; align-items:center; justify-content:center;
+    color: var(--text-muted);
+    font-family:"Fraunces", serif; font-style: italic;
+  }
+  .about .portrait img{ width:100%; height:100%; object-fit:cover; }
+  .about h3{ font-size: 1.6rem; font-weight: 500; margin-bottom: 18px; }
+  .about p{ color: var(--text-muted); margin-bottom: 18px; max-width: 62ch; }
+  .about .skills{
+    display:flex; flex-wrap:wrap; gap: 10px;
+    margin: 24px 0 30px;
+    padding: 0; list-style:none;
+  }
+  .about .skills li{
+    font-size: 0.78rem;
+    border: 1px solid var(--line-strong);
+    padding: 6px 14px;
+    border-radius: 999px;
+    color: var(--text);
+  }
+  .about .contact{ display:flex; gap: 26px; flex-wrap:wrap; }
+  .about .contact a{
+    font-size: 0.9rem;
+    border-bottom: 1px solid var(--line-strong);
+    padding-bottom: 3px;
+    transition: border-color .25s ease, color .25s ease;
+  }
+  .about .contact a:hover{ color: var(--accent); border-color: var(--accent); }
+
+  @media (max-width: 780px){
+    .about{ grid-template-columns: 1fr; }
+    .about .portrait{ max-width: 260px; }
+  }
+
+  /* ============ FOOTER ============ */
+  footer{
+    padding: 40px clamp(20px,6vw,64px) 60px;
+    max-width: var(--maxw);
+    margin: 0 auto;
+    display:flex;
+    justify-content: space-between;
+    color: var(--text-muted);
+    font-size: 0.78rem;
+    border-top: 1px solid var(--line);
+  }
+</style>
+</head>
+<body>
+
+<!-- ===================== NAV ===================== -->
+<nav class="nav">
+  <span class="nav-mark" id="navMark">Dem</span>
+  <button class="nav-toggle" id="navToggle" aria-label="Abrir menú">
+    <span></span><span></span><span></span>
+  </button>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#inicio" class="active">Inicio</a></li>
+    <li><a href="#renders">Renders</a></li>
+    <li><a href="#3d">3D</a></li>
+    <li><a href="#ilustraciones">Ilustraciones</a></li>
+    <li><a href="#bestiario">Bestiario</a></li>
+    <li><a href="#sobre-mi">Sobre mí</a></li>
+  </ul>
+</nav>
+
+<!-- ===================== HERO / INICIO ===================== -->
+<section class="hero" id="inicio">
+  <h1 class="hero-title display">CONCEPT ART</h1>
+  <p class="hero-sub">Dem</p>
+  <div class="hero-scroll">
+    <span>desplázate</span>
+    <div class="hero-scroll-line"></div>
+  </div>
+</section>
+
+<!-- ===================== RENDERS ===================== -->
+<section id="renders">
+  <div class="section-head">
+    <h2>Renders</h2>
+    <p>Composiciones finales — iluminación, materiales y atmósfera.</p>
+  </div>
+  <div class="gallery">
+    <!-- Reemplaza cada .placeholder por <img src="ruta/a/tu/render.jpg" alt="..."> -->
+    <div class="piece"><img src="images/demPS1.png" alt="demPS1"><div class="name">Nombre de la pieza</div><div class="tag">Blender · 2026</div></div></div>
+    <div class="piece"><img src="images/demPS2.png" alt="demPS2"><div class="meta"><div class="name">Nombre de la pieza</div><div class="tag">Blender · 2026</div></div></div>
+    <div class="piece"><img src="images/nes1.png" alt="nes1"><div class="meta"><div class="name">Nombre de la pieza</div><div class="tag">Blender · 2026</div></div></div>
+    <div class="piece"><img src="images/nes2.png" alt="nes2"><div class="meta"><div class="name">Nombre de la pieza</div><div class="tag">Blender · 2026</div></div></div>
+    <div class="piece"><img src="images/srburbuja.png" alt="srburbuja"><div class="meta"><div class="name">Nombre de la pieza</div><div class="tag">Blender · 2026</div></div></div>
+    <div class="piece"><img src="images/modelo03.png" alt="modelo03"><div class="meta"><div class="name">Nombre de la pieza</div><div class="tag">Blender · 2026</div></div></div>
+  </div>
+</section>
+
+<!-- ===================== 3D ===================== -->
+<section id="3d">
+  <div class="section-head">
+    <h2>3D</h2>
+    <p>Modelado, topología y proceso — visualizaciones de trabajo en curso.</p>
+  </div>
+  <div class="gallery">
+    <div class="piece"><img src="images/modelo01.png" alt="modelo01"><div class="meta"><div class="name">CocaCola</div><div class="tag">Render Blender</div></div></div>
+    <div class="piece"><img src="images/modelo02.png" alt="modelo02"><div class="meta"><div class="name">BlamN Cute</div><div class="tag">Render Blender</div></div></div>
+    <div class="piece"><img src="images/modelo04.png" alt="modelo04"><div class="meta"><div class="name">LipGlos</div><div class="tag">Render Blender</div></div></div>
+    <div class="piece"><img src="images/modelo05.png" alt="modelo05"><div class="meta"><div class="name">LipstickMockup</div><div class="tag">Render Blender</div></div></div>
+  </div>
+</section>
+
+<!-- ===================== ILUSTRACIONES ===================== -->
+<section id="ilustraciones">
+  <div class="section-head">
+    <h2>Ilustraciones</h2>
+    <p>Piezas 2D — estudios de color, composición y narrativa visual.</p>
+  </div>
+  <div class="gallery">
+    <div class="piece"><img src="images/PezMono.png" alt="PezMono"><div class="meta"><div class="name">Nombre de la pieza</div><div class="tag">Digital · 2025</div></div></div>
+    <div class="piece"><img src="images/robot.jpg" alt="robot"><div class="meta"><div class="name">Nombre de la pieza</div><div class="tag">Digital · 2025</div></div></div>
+    <div class="piece"><img src="images/TNilus.png" alt="TNilus"><div class="meta"><div class="name">Nombre de la pieza</div><div class="tag">Digital · 2025</div></div></div>
+    <div class="piece"><img src="images/aliens31.png" alt="aliens31"><div class="meta"><div class="name">Nombre de la pieza</div><div class="tag">Digital · 2025</div></div></div>
+    <div class="piece"><img src="images/diosalunar.png" alt="diosalunar"><div class="meta"><div class="name">Nombre de la pieza</div><div class="tag">Digital · 2025</div></div></div>
+  </div>
+</section>
+
+<!-- ===================== BESTIARIO (panel, no es scroll normal) ===================== -->
+<section id="bestiario">
+  <button class="view-close" id="bestiarioClose">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+    Volver
+  </button>
+  <div class="section-head">
+    <h2>Bestiario</h2>
+    <p>Catálogo de criaturas y biomas de un mundo original.</p>
+  </div>
+  <div class="bestiary-list">
+    <!-- Cada fila es un "espécimen"; sustituye el placeholder del thumb por tu ilustración -->
+    <div class="specimen">
+      <div class="index">01</div>
+      <div class="thumb">criatura 01</div>
+      <div class="info">
+        <h3>Nombre de la criatura</h3>
+        <span class="biome">Bioma · nombre</span>
+        <p>Breve descripción de comportamiento, hábitat o rol dentro del ecosistema del mundo.</p>
+      </div>
+    </div>
+    <div class="specimen">
+      <div class="index">02</div>
+      <div class="thumb">criatura 02</div>
+      <div class="info">
+        <h3>Nombre de la criatura</h3>
+        <span class="biome">Bioma · nombre</span>
+        <p>Breve descripción de comportamiento, hábitat o rol dentro del ecosistema del mundo.</p>
+      </div>
+    </div>
+    <div class="specimen">
+      <div class="index">03</div>
+      <div class="thumb">criatura 03</div>
+      <div class="info">
+        <h3>Nombre de la criatura</h3>
+        <span class="biome">Bioma · nombre</span>
+        <p>Breve descripción de comportamiento, hábitat o rol dentro del ecosistema del mundo.</p>
+      </div>
+    </div>
+    <div class="specimen">
+      <div class="index">04</div>
+      <div class="thumb">criatura 04</div>
+      <div class="info">
+        <h3>Nombre de la criatura</h3>
+        <span class="biome">Bioma · nombre</span>
+        <p>Breve descripción de comportamiento, hábitat o rol dentro del ecosistema del mundo.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== SOBRE MÍ ===================== -->
+<section id="sobre-mi">
+  <div class="section-head">
+    <h2>Sobre mí</h2>
+    <p>Quién hace este trabajo y cómo contactarme.</p>
+  </div>
+  <div class="about">
+    <div class="portrait">
+      <img src="images/yo.jpg" alt="Diego Sánchez">
+    </div>
+    <div>
+      <h3>Diego Sanchez</h3>
+      <p>Soy un apasionado por la expresion artistica, me gusta crear mundos y criaturas que inspiren la imaginación, hacer renders y concept art. Me gusta experimentar, crear y descubrir cosas nuevas durante el proceso de aprendizaje que lleva cada pieaza.</p>
+      <p>"Aprende las reglas como un profesional, para que puedas romperlas como un artista." — Pablo Picasso</p>
+      <ul class="skills">
+        <li>Blender</li>
+        <li>Ilustración digital</li>
+        <li>Concept art</li>
+        <li>Diseño de criaturas</li>
+        <li>Worldbuilding</li>
+      </ul>
+      <div class="contact">
+        <a href="mailto:tucorreo@ejemplo.com">correo<die03sav20@gmail.com/a>
+        <a href="https://www.instagram.com/dem_visual/" target="_blank" rel="noopener">instagram</a>
+        <a href="#" target="_blank" rel="noopener">linkedin</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span>© 2026 — Portafolio personal</span>
+  <span>Hecho con HTML &amp; CSS</span>
+</footer>
+
+<script>
+  // Menú móvil
+  const navToggle = document.getElementById('navToggle');
+  const navLinks = document.getElementById('navLinks');
+  navToggle.addEventListener('click', () => {
+    navLinks.classList.toggle('open');
+  });
+  navLinks.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => navLinks.classList.remove('open'));
+  });
+
+  // ---- Panel del Bestiario: se abre por encima de la interfaz, sin recargar ni navegar a otra página ----
+  const bestiario = document.getElementById('bestiario');
+  const bestiarioClose = document.getElementById('bestiarioClose');
+  const bestiarioLink = document.querySelector('.nav-links a[href="#bestiario"]');
+  let savedScrollY = 0;
+
+  function openBestiario(pushState){
+    savedScrollY = window.scrollY;
+    document.body.style.top = '-' + savedScrollY + 'px';
+    document.body.classList.add('view-locked');
+    bestiario.classList.add('open');
+    document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+    if (bestiarioLink) bestiarioLink.classList.add('active');
+    navMark.classList.add('visible');
+    if (pushState) history.pushState({ view: 'bestiario' }, '', '#bestiario');
+  }
+
+  function closeBestiario(pushState){
+    bestiario.classList.remove('open');
+    document.body.classList.remove('view-locked');
+    document.body.style.top = '';
+    window.scrollTo(0, savedScrollY);
+    if (pushState) history.pushState({}, '', '#inicio');
+  }
+
+  if (bestiarioLink){
+    bestiarioLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      navLinks.classList.remove('open'); // cierra el menú móvil si estaba abierto
+      openBestiario(true);
+    });
+  }
+  bestiarioClose.addEventListener('click', () => closeBestiario(true));
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && bestiario.classList.contains('open')) closeBestiario(true);
+  });
+  window.addEventListener('popstate', () => {
+    if (bestiario.classList.contains('open')) closeBestiario(false);
+  });
+  // Si alguien entra directo con #bestiario en la URL, abre el panel de una vez
+  if (location.hash === '#bestiario') openBestiario(false);
+
+  // Resalta el link activo según la sección visible + muestra "Dem" al salir del hero
+  const sections = document.querySelectorAll('section[id]:not(#bestiario)');
+  const navMark = document.getElementById('navMark');
+  const heroEl = document.getElementById('inicio');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      const id = entry.target.getAttribute('id');
+      const link = document.querySelector('.nav-links a[href="#' + id + '"]');
+      if (entry.isIntersecting){
+        document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+        if (link) link.classList.add('active');
+      }
+    });
+  }, { threshold: 0.4 });
+  sections.forEach(s => observer.observe(s));
+
+  const heroObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      navMark.classList.toggle('visible', !entry.isIntersecting);
+    });
+  }, { threshold: 0.1 });
+  heroObserver.observe(heroEl);
+</script>
+
+</body>
+</html>
